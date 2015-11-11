@@ -12,6 +12,7 @@ libpeerconnection.log
 *.nw
 public/application.css
 public/application.js
+public/application.css.map
 
 src/*.js
 app/views/*.js
