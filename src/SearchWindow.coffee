@@ -5,18 +5,17 @@
 app = require "app"
 BrowserWindow = require "browser-window"
 
-class AboutWindow
+class SearchWindow
   constructor: (devtools) ->
     @window = new BrowserWindow
-      'width': 400
-      'height': 300
-      'center': true
+      'width': 150
+      'height': 50
       'resizable': false
-      'title': "About Summertree"
+      'title': "Search"
 
-    @window.loadURL "file://#{__dirname}/../public/about.html"
+    @window.loadURL "file://#{__dirname}/../public/search.html"
 
     @window.on "closed",  ->
       @window = null # Dereference the window.
 
-module.exports = AboutWindow
+module.exports = SearchWindow

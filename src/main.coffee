@@ -1,15 +1,15 @@
-# Springseed. Simply awesome note taking.
-# Copyright (c) 2014, Springseed Team
+# Summertree
+# Copyright (c) 2015, Brice SANTUS
 # All Rights Reserved.
 
 app = require "app"
-SpringseedWindow = require './Springseed'
+SummertreeWindow = require './Summertree'
 
 app.on 'ready', ->
-  window = new SpringseedWindow()
+  window = new SummertreeWindow()
 
 app.on 'window-all-closed', ->
   app.quit()
 
 app.on 'activate-with-no-open-windows', ->
-  window = new SpringseedWindow()
+  window = new SummertreeWindow()

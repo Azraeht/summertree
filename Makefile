@@ -28,7 +28,10 @@ style:
 	@sass $(css) $(css_out)
 
 npm:
-	@npm install .
+		@npm install .
 
 clean:
 	@rm -f $(spsd_out) $(atom_out) $(css_out)
+
+start:
+	@npm start
