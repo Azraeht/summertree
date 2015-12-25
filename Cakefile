@@ -85,4 +85,3 @@ task 'server', 'Start server', (options) ->
 task 'build',  'Compile CoffeeScript', compile.coffee
 task 'minify', 'Minify application.js', compile.minify
 task 'style',  'Compile Stylesheets', compile.sass
-

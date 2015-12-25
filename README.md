@@ -17,19 +17,38 @@ build below fail, you should run `make clean` before trying again because some
 make operations won't complete if they've errored. Nothing we can do to fix
 this.
 
-### Build
+Guard is used to watch every modification on sources files and launch make each time
+Summertree is written in CoffeeScript and uses Spine.JS for MVC.
+
+For web version of summertree, use 'cake'
+
+### Install
 
     sudo gem install sass
     git submodule update --init
-    make
+    make npm
+
+### Development
+
+    bundle exec guard
+
+### Build
+
+    make clean
+    make all
+
+    cake build
+    cake minify
+    cake style
 
 ### Start
 
-    npm start
+    make start
+
+    cake server
+
 
 If you're feeling awesome, you should contribute either with code.
-
-Springseed is written in CoffeeScript and uses Spine.JS for MVC.
 
 ## Official website
 

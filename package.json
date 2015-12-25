@@ -29,7 +29,12 @@
     "coffee-script": "1.7.x",
     "coffeeify": "0.6.x",
     "electron-prebuilt": "^0.35.1",
-    "handlebars": "1.0.x"
+    "handlebars": "1.0.x",
+    "coffee-scrunch": "0.2.3",
+    "uglify-js": "2.6.1",
+    "node-static": "0.7.7",
+    "node-sass": "3.4.2",
+    "node-watch": "0.3.5"
   },
   "scripts": {
     "start": "electron ."
