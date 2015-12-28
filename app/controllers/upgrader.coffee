@@ -80,11 +80,11 @@ class window.upgrader extends Spine.Controller
 
       # Set up where we're going to store stuff.
       if window.process.platform is 'darwin'
-        storagedir = path.join(homedir, "/Library/Application Support/Springseed/")
+        storagedir = path.join(homedir, "/Library/Application Support/Summertree/")
       else if window.process.platform is 'win32'
-        storagedir = path.join(process.env.LOCALAPPDATA, "/Springseed/")
+        storagedir = path.join(process.env.LOCALAPPDATA, "/Summertree/")
       else if window.process.platform is 'linux'
-        storagedir = path.join(homedir, '/.config/Springseed/')
+        storagedir = path.join(homedir, '/.config/Summertree/')
 
       notebookdir = path.join(storagedir, 'Notebooks')
       notebooks = {}

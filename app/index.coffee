@@ -92,7 +92,7 @@ class App extends Spine.Controller
     @editor = new Editor( el: @editor )
     @popover = new Popover( el: @popoverMask )
 
-    # We'll put the sync conenct here as well.
+    # We'll put the sync connect here as well.
     Spine.trigger 'sync:authorized' if Sync.oauth.service != "undefined"
     Sync.anal()
 

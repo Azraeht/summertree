@@ -191,8 +191,17 @@ body.about {
 		margin: 5px 0;
 	}
 }
+#search {
+		width: 300px;
+		height: 30px;
 
+		input {
+			width: 300px;
+			height: 30px;
+		}
+}
 #browser {
+	margin-top: 15px;
 	position: absolute;
 	background: $light-color;
 	overflow-x: hidden;
