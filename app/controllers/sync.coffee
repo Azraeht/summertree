@@ -58,7 +58,7 @@ window.Sync =
         language: navigator.language
         platform: navigator.platform
         version: localStorage.version
-      # $.get("http://api.getspringseed.com/client", anal)
+      # $.get("http://api.getsummertree.com/client", anal)
 
   auth: (callback) ->
 
@@ -89,7 +89,7 @@ window.Sync =
         Sync.socket.disconnect()
         Sync.socket.socket.reconnect()
       else
-        Sync.socket = io.connect("https://springseed.azurewebsites.net:443")
+        Sync.socket = io.connect("https://summertree.azurewebsites.net:443")
 
       Sync.socket.on "meta", (data) ->
         console.log('meta', data)
@@ -144,8 +144,8 @@ window.Sync =
           request: "findappdir"
       ).done((data) ->
         for item in data.data
-          # Break when we find the springseed folder
-          if item.name.toLowerCase() is "springseed"
+          # Break when we find the summertree folder
+          if item.name.toLowerCase() is "summertree"
             Sync.syncMeta.folderid = item.id
             break
         $.ajax(
@@ -352,7 +352,7 @@ window.Sync =
 
       if opts.request is "refresh"
         params.type = "get"
-        params.url = "https://springseed.azurewebsites.net:443/refresh/skydrive?code=" + Sync.oauth.refresh_token
+        params.url = "https://summertree.azurewebsites.net:443/refresh/skydrive?code=" + Sync.oauth.refresh_token
 
       else if opts.request is "me"
         params.type = "get"
@@ -366,7 +366,7 @@ window.Sync =
         params.type = "post"
         params.contentType = "application/json"
         params.url = "https://apis.live.net/v5.0/me/skydrive/my_documents?access_token=" + Sync.oauth.access_token
-        params.data = '{"name": "Springseed", "description": "Springseed App Data"}'
+        params.data = '{"name": "summertree", "description": "summertree App Data"}'
 
       else if opts.request is "findappdir"
         params.type = "get"
@@ -388,7 +388,7 @@ window.Sync =
     if @state is OFFLINE
       @state = IN_PROGRESS
 
-      request = indexedDB.open("springseed", 1)
+      request = indexedDB.open("summertree", 1)
 
       request.onupgradeneeded = (e) =>
         @db = e.target.result
