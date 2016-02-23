@@ -1,10 +1,12 @@
 Spine = require 'spine'
 Notebook = require './notebook.coffee'
+Logger = require '../controllers/logger.coffee'
 
 class window.Note extends Spine.Model
   @configure 'Note',
     'name',
     'starred',
+    'color',
     'excerpt',
     'notebook',
     'category',
@@ -46,7 +48,7 @@ class window.Note extends Spine.Model
         note.date = note.prettyDate()
         results.push(note)
 
-    console.log(results)
+    Logger.log("debug", "Rercherche de : " + string)
     Notebook.trigger 'changeNotebook', {id: 'all', category: 'all', search: true, result: results}
 
   prettyDate: (time) =>

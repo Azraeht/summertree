@@ -22,7 +22,6 @@ class NoteItem extends Spine.Controller
     @note.bind "destroy", @deleteNote
 
   select: ->
-
     Note.trigger "changeNote", {id: @note.id}
     # console.log 'unemojified - change'
 

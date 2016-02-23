@@ -59,6 +59,7 @@ module.exports =
         @show()
 
       delete: ->
+        console.log(Note.current)
         # Taken from controllers/panel.coffee.
         if Note.current isnt undefined
           currentNote = Note.find(Note.current.id)
@@ -68,7 +69,7 @@ module.exports =
           currentNote.destroy()
 
           @hide()
-    
+
 	modals['newNote'] = new Modal
 	  el: $('.newNote')
 	  events:

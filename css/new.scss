@@ -196,7 +196,7 @@ body.about {
 		height: 30px;
 
 		input {
-			width: 300px;
+			width: 296px;
 			height: 30px;
 		}
 }
@@ -284,10 +284,33 @@ body.about {
 
 	header {
 		margin: 0;
-		background: #9b59b6;
 		position: absolute;
 		left: 15px; right: 15px;
 		padding: 10px;
+
+		&.defaultcolor {
+			background: #9b59b6;
+		}
+
+		&.redcolor {
+			background: #F44336;
+		}
+
+		&.bluecolor {
+			background: #03A9F4;
+		}
+
+		&.greencolor {
+			background: #4CAF50;
+		}
+
+		&.orangecolor {
+			background: #FF9800;
+		}
+
+		&.yellowcolor {
+			background: #FFEB3B;
+		}
 
 		.headerwrap {
 			-webkit-user-select: none;
@@ -299,6 +322,12 @@ body.about {
 
 			.star.starred {
 				color: #f1c40f;
+			}
+
+			.square {
+				margin-left: 5px;
+				color: $light-color;
+				font-size: 14pt;
 			}
 
 			input {

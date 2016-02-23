@@ -6,11 +6,13 @@ hljs = require 'highlight.js'
 Note = require '../models/note.coffee'
 
 # Controllers
+Logger = require '../controllers/logger.coffee'
 window.Modal = require '../controllers/modal.coffee'
 
 class Editor extends Spine.Controller
 
   elements:
+    "header": "header"
     ".headerwrap .left input": "title"
     ".headerwrap .left time": "time"
     "#contentread": "contentread"
@@ -18,6 +20,7 @@ class Editor extends Spine.Controller
     ".headerwrap .edit": "toggle"
     "#psuedoinput": "psuedoinput"
     ".headerwrap i.star": "star"
+    ".headerwrap i.square" : "square"
 
   events:
     "click .headerwrap .edit": "toggleMode"
@@ -27,6 +30,7 @@ class Editor extends Spine.Controller
     "dblclick #contentread": "toggleMode"
     "click header .right .delete": "deleteNote"
     "click header .star": "starNote"
+    "click header .square": "changeColor"
     "textInput section.inner": "inputHandler" # used for emojis
     "blur section.inner": "blurHandler" # again, used for emojis
 
@@ -34,7 +38,6 @@ class Editor extends Spine.Controller
   starNote: ->
     note = Note.find(Note.current.id)
     if note.starred is "true"
-      note.updateAttribute("starred", "false")
       @star.addClass("fa-star-o")
       @star.removeClass("fa-star")
       @star.removeClass("starred")
@@ -43,6 +46,20 @@ class Editor extends Spine.Controller
       @star.removeClass("fa-star-o")
       @star.addClass("fa-star")
       @star.addClass("starred")
+
+  changeColor: ->
+    Logger.log("info", "Changing note color")
+    note = Note.find(Note.current.id)
+    colours = ["default", "red", "blue", "orange", "yellow","green"]
+    currentcolor = note.color
+    nextcolor = if currentcolor < 5 then currentcolor + 1 else 0
+
+    Logger.log("debug", "CurrentColor : " + currentcolor)
+    Logger.log("debug", "NextColor : " + nextcolor)
+
+    note.updateAttribute("color", nextcolor)
+    @header.addClass(colours[nextcolor] + "color")
+    @header.removeClass(colours[currentcolor] + "color")
 
   deleteNote: (e) ->
     note = Note.find(Note.current.id)
@@ -98,6 +115,11 @@ class Editor extends Spine.Controller
         @star.attr('class', 'star fa fa-star starred')
       else
         @star.attr('class', 'star fa fa-star-o')
+
+      # Changing headercolor
+      @header.attr('class', '')
+      colours = ["default", "red", "blue", "orange", "yellow","green"]
+      @header.addClass(colours[currentNote.color] + "color")
 
       # Content
       currentNote.loadNote (content) =>
