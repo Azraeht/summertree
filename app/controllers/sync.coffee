@@ -61,9 +61,10 @@ window.Sync =
       # $.get("http://api.getsummertree.com/client", anal)
 
   auth: (callback) ->
-
+    console.log("sync.auth")
     # Saves data after getting it from the auth server
     onData = (data) ->
+      console.log("sync.ondata")
       # Calc expiration date
       data.expires = new Date().getTime() + parseInt(data.expires_in)*1000 if data.hasOwnProperty("expires_in")
       Sync.oauth = data
@@ -83,13 +84,14 @@ window.Sync =
         Sync.doSync()
       )
 
+    console.log(Sync.oauth)
     if Sync.oauth.service is "undefined"
       # There's something weird, even thought the sockets should die.
       if Sync.socket
         Sync.socket.disconnect()
         Sync.socket.socket.reconnect()
       else
-        Sync.socket = io.connect("https://summertree.azurewebsites.net:443")
+        Sync.socket = io.connect("https://springseed.azurewebsites.net:443")
 
       Sync.socket.on "meta", (data) ->
         console.log('meta', data)
@@ -112,6 +114,7 @@ window.Sync =
   # There's two options of destroying stuff.
   # Destroy the server, or destroy the client.
   firstSync: (method) ->
+    console.log("sync.firstsync")
     deferred = new $.Deferred()
     if method is "destroyserver"
       $.ajax(
@@ -136,6 +139,7 @@ window.Sync =
       Sync.doSync()
 
   preSync: ->
+    console.log("sync.preSync")
     deferred = new $.Deferred()
 
     if Sync.oauth.service is "skydrive"
@@ -167,7 +171,7 @@ window.Sync =
   # It downloads the meta, then updates it to latest version as well as doing various other io.
   # It's magic. Trust me.
   doSync: ->
-
+    console.log("sync.dosync")
     Spine.trigger 'sync:start'
 
     # Downloads a meta file.

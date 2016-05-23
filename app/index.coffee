@@ -40,23 +40,24 @@ class App extends Spine.Controller
   constructor: ->
     super
 
-    Account.enableChecks()
+    # TODO : Account not available yet
+    # Account.enableChecks()
     Notebook.fetch()
     Note.fetch()
 
-    anal = new Analytics('u9g1p9otaa')
+    # anal = new Analytics('u9g1p9otaa')
 
     # We're nosey.
-    anal.track({
-      'userId': 'anonymous_user',
-      'event': 'Open App',
-      'properties': {
-        'os': @getOS(),
-        'country': @getCountry(),
-        'language': navigator.language,
-        'version': localStorage.version
-      }
-    })
+    # anal.track({
+    #   'userId': 'anonymous_user',
+    #   'event': 'Open App',
+    #   'properties': {
+    #     'os': @getOS(),
+    #     'country': @getCountry(),
+    #     'language': navigator.language,
+    #     'version': localStorage.version
+    #   }
+    # })
 
     # Init the Splitter so we can see crap.
     Splitter.init
@@ -133,6 +134,7 @@ class App extends Spine.Controller
     return "Windows 8.1" if ua.indexOf("Windows NT 6.3") > -1
 
   getCountry: ->
+    # TODO : Not working yet. Used by analytics
     $.getJSON 'http://freegeoip.net/json/', (loc) ->
       return loc.country_name
 

@@ -28,6 +28,7 @@ class Account
     return false if not localStorage.token
 
   @enableChecks: () ->
+    
     $.get 'http://api.getsummertree.com/me', {token: localStorage.token}, (data) =>
       if data['status'] is 403
         # Get a new valid token - for the old one has expired.
