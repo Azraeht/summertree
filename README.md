@@ -24,6 +24,7 @@ For web version of summertree, use 'cake'
 
 ### Install
 
+    sudo apt-get install nodejs npm
     sudo gem install sass
     git submodule update --init
     make npm
