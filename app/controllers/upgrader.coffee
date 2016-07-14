@@ -84,7 +84,7 @@ class window.upgrader extends Spine.Controller
       else if window.process.platform is 'win32'
         storagedir = path.join(process.env.LOCALAPPDATA, "/Summertree/")
       else if window.process.platform is 'linux'
-        storagedir = path.join(homedir, '/.config/Summertree/')
+        storagedir = path.join(homedir, '/.config/summertree/')
 
       notebookdir = path.join(storagedir, 'Notebooks')
       notebooks = {}

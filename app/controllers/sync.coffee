@@ -61,13 +61,15 @@ window.Sync =
       # $.get("http://api.getsummertree.com/client", anal)
 
   auth: (callback) ->
-
+    console.debug("sync.auth")
     # Saves data after getting it from the auth server
     onData = (data) ->
+      console.debug("sync.ondata")
       # Calc expiration date
       data.expires = new Date().getTime() + parseInt(data.expires_in)*1000 if data.hasOwnProperty("expires_in")
       Sync.oauth = data
       localStorage.oauth = JSON.stringify(data)
+      # Call Spine.bind 'sync:authorized' which store information about authenticated user
       Spine.trigger 'sync:authorized'
 
       # Weird? Do a sync on error. Nope. We're checking if a meta file exists and then asking the user if they
@@ -78,29 +80,42 @@ window.Sync =
           request: "download"
           filename: "meta"
       ).done((data) ->
+         console.debug('Modal : sync.meta')
+         # Calling Spine.bind 'sync:meta' which open modal Client/Server choose
          Spine.trigger 'sync:meta'
       ).error((data) ->
+        console.debug('Begin Sync')
         Sync.doSync()
       )
 
+
     if Sync.oauth.service is "undefined"
+      console.debug("Sync.oauth.service is undefined")
       # There's something weird, even thought the sockets should die.
       if Sync.socket
+        console.debug("Sync.socket exist")
         Sync.socket.disconnect()
         Sync.socket.socket.reconnect()
       else
-        Sync.socket = io.connect("https://summertree.azurewebsites.net:443")
+        console.debug("Sync.socket doesn't exist : getting from https://springseed.azurewebsites.net:443")
+        Sync.socket = io.connect("https://springseed.azurewebsites.net:443")
 
+      # Listenner : Listen for meta event triggered by springseed.azurewebsites
       Sync.socket.on "meta", (data) ->
-        console.log('meta', data)
+        console.debug('springseed.azurewebsites call meta', data)
+        console.debug('callback:', callback)
+        # Why callback????
         callback(data)
 
+      # Listenner : Listen for authorized event triggered by springseed.azurewebsites
       Sync.socket.on "authorized", (data) ->
+        console.debug('springseed.azurewebsites call on authorized', data)
         onData(data)
         Sync.socket.disconnect() # Free up server resources
 
     # If it expires in the next ten minutes, we'll refresh the token
     else if Sync.oauth.service is "skydrive" and new Date().getTime() > (Sync.oauth.expires - 6000000)
+      console.debug("Sync.oauth.service is skydrive")
       $.ajax(
         Sync.generateRequest
           request: "refresh"
@@ -112,6 +127,7 @@ window.Sync =
   # There's two options of destroying stuff.
   # Destroy the server, or destroy the client.
   firstSync: (method) ->
+    console.debug("sync.firstsync")
     deferred = new $.Deferred()
     if method is "destroyserver"
       $.ajax(
@@ -136,6 +152,7 @@ window.Sync =
       Sync.doSync()
 
   preSync: ->
+    console.debug("sync.preSync")
     deferred = new $.Deferred()
 
     if Sync.oauth.service is "skydrive"
@@ -167,7 +184,7 @@ window.Sync =
   # It downloads the meta, then updates it to latest version as well as doing various other io.
   # It's magic. Trust me.
   doSync: ->
-
+    console.debug("Sync.dosync")
     Spine.trigger 'sync:start'
 
     # Downloads a meta file.
@@ -271,18 +288,18 @@ window.Sync =
               filename: "meta"
               data: JSON.stringify(result[0])
           ).done (data) ->
-            console.log("all done! Delete the queue")
+            console.debug("all done! Delete the queue")
             Sync.queue = {"Note": {}, "Notebook": {}}
             Sync.saveQueue()
             Spine.trigger 'sync:stop'
 
     ).error (data) ->
       if data.status is 401
-        console.log "the bearer token is wrong. deleting token & please reauth"
+        console.debug "the bearer token is wrong. deleting token & please reauth"
         Sync.signOut()
 
       else if data.status is 404
-        console.log "meta does not exist. uploading a new meta w/ every single file"
+        console.debug "meta does not exist. uploading a new meta w/ every single file"
 
         promises = []
         $(Note.all()).each (i, e) ->
@@ -300,7 +317,7 @@ window.Sync =
 
         # stuff
         $.when(promises).done ->
-          console.log 'All files uploaded, uploading the meta file'
+          console.debug 'All files uploaded, uploading the meta file'
 
           $.ajax(
             Sync.generateRequest
@@ -308,7 +325,7 @@ window.Sync =
               filename: "meta"
               data: Sync.exportData()
           ).done (data) ->
-            console.log("all done! Delete the queue")
+            console.debug("all done! Delete the queue")
             Sync.queue = {"Note": {}, "Notebook": {}}
             Sync.saveQueue()
             Spine.trigger 'sync:stop'
@@ -578,15 +595,15 @@ Model.Sync =
 
   extended: ->
 
-    console.log '%c> Setting up sync for %s', 'font-weight: bold', this.name
+    console.debug '%c> Setting up sync for %s', 'font-weight: bold', this.name
 
     @fetch ->
-      console.log '%c> Calling fetch', 'background: #eee'
+      console.debug '%c> Calling fetch', 'background: #eee'
       Sync.defer(this, @loadLocal)
 
     @change (record, event) ->
       Sync.addToQueue(event, record)
-      console.log '%c> Calling change: ' + event, 'background: #eee'
+      console.debug '%c> Calling change: ' + event, 'background: #eee'
       Sync.defer(this, @saveLocal)
       Sync.timeoutSync()
 
@@ -602,7 +619,7 @@ Model.Sync =
 
   loadLocal: (options = {}) ->
 
-    console.log "%c> Fetching #{@className}s", 'color: blue'
+    console.debug "%c> Fetching #{@className}s", 'color: blue'
 
     options.clear = true unless options.hasOwnProperty('clear')
 

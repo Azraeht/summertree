@@ -68,6 +68,7 @@ class Settings extends Spine.Controller
     ,100
 
   accountSignin: ->
+    Logger.log("info", "settings.accountSignin")
     if Account.signin(@usernameinput.val(), @passwordinput.val())
       if Account.isSignedIn()
         @hide()

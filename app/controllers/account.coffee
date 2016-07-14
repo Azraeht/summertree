@@ -30,17 +30,15 @@ class Account
     return false if not localStorage.token
 
   @enableChecks: () ->
-    console.log "enableChecks"
-    @signin()
-    # $.get 'http://api.getspringseed.com/me', {token: localStorage.token}, (data) =>
-    #   console.log data
-    #   if data['status'] is 403
-    #     # Get a new valid token - for the old one has expired.
-    #     localStorage.removeItem 'token'
-    #     @signin()
-    #   else
-    #     console.log data
-    #     localStorage.data = JSON.stringify({'username': data.username, 'first_name': data.first_name, 'last_name': data.last_name, 'pro': data.pro})
+    console.debug("account.enableChecks")
+    $.get 'http://api.getsummertree.com/me', {token: localStorage.token}, (data) =>
+      if data['status'] is 403
+        # Get a new valid token - for the old one has expired.
+        localStorage.removeItem 'token'
+        @signin()
+      else
+        console.log data
+        localStorage.data = JSON.stringify({'username': data.username, 'first_name': data.first_name, 'last_name': data.last_name, 'pro': data.pro})
     setTimeout(@enableChecks, 300000);
 
   @get: () ->
