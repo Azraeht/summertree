@@ -4,10 +4,12 @@ class Account
   constructor: ->
 
   @signin: (username, password) ->
+    console.log "signin"
     # Sign in to the summertree API. It should return a token. Save it.
     localStorage.login = JSON.stringify {'username': username, 'password': password}
     if not username and not password
       # Try signing in with stored credidentials.
+      console.log("try to login " + username + " / " + password)
       $.get 'http://api.getsummertree.com/login', JSON.parse(localStorage.login), (data) =>
         if data['status'] is 200
           localStorage.token = data['token']
@@ -28,14 +30,17 @@ class Account
     return false if not localStorage.token
 
   @enableChecks: () ->
-    $.get 'http://api.getsummertree.com/me', {token: localStorage.token}, (data) =>
-      if data['status'] is 403
-        # Get a new valid token - for the old one has expired.
-        localStorage.removeItem 'token'
-        @signin()
-      else
-        console.log data
-        localStorage.data = JSON.stringify({'username': data.username, 'first_name': data.first_name, 'last_name': data.last_name, 'pro': data.pro})
+    console.log "enableChecks"
+    @signin()
+    # $.get 'http://api.getspringseed.com/me', {token: localStorage.token}, (data) =>
+    #   console.log data
+    #   if data['status'] is 403
+    #     # Get a new valid token - for the old one has expired.
+    #     localStorage.removeItem 'token'
+    #     @signin()
+    #   else
+    #     console.log data
+    #     localStorage.data = JSON.stringify({'username': data.username, 'first_name': data.first_name, 'last_name': data.last_name, 'pro': data.pro})
     setTimeout(@enableChecks, 300000);
 
   @get: () ->
